@@ -13,18 +13,21 @@
         <canvas id="ui"></canvas>
         <div id="status">모델 로딩 중…</div>
         <div id="mode-badge"></div>
+        <div id="game-overlay" class="hidden"></div>
       </div>
       <div id="toolbar">
         <label>색상 <input type="color" id="color" value="#ff3b30" /></label>
         <label>굵기 <input type="range" id="width" min="2" max="24" value="6" /></label>
+        <button id="undo">↩️ 실행취소</button>
         <button id="clear">전체 지우기</button>
         <button id="save">PNG 저장</button>
         <button id="recognize">🤖 AI 인식</button>
+        <button id="game">🎮 게임 시작</button>
         <label><input type="checkbox" id="debug" /> 랜드마크 표시</label>
       </div>
       <div id="ai-result" class="hidden"></div>
       <p id="help">
-        ☝️ 검지만 펴면 <b>그리기</b> · ✊ 주먹 쥐면 <b>펜 올리기</b> · 🖐️ 손바닥 펴면 <b>지우개</b>
+        ☝️ 검지 <b>그리기</b> · ✊ 주먹 <b>펜 업</b> · 🖐️ 손바닥 <b>지우개</b> · ✌️ 두 손가락 <b>색 변경</b> · 👍 엄지척 <b>실행취소/제출</b>
       </p>
     </div>
     <script type="module" src="/src/main.ts"></script>

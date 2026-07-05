@@ -106,6 +106,50 @@ body {
   color: #999;
 }
 
+#game-overlay {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 260px;
+  max-width: 80%;
+  padding: 14px 22px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  z-index: 6;
+}
+
+#game-overlay.hidden {
+  display: none;
+}
+
+#game-overlay .big {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#game-overlay .word {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+#game-overlay .sub {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+#game-overlay .correct {
+  color: #34c759;
+}
+
+#game-overlay .wrong {
+  color: #ff6b60;
+}
+
 #ai-result {
   max-width: min(90vw, 960px);
   padding: 12px 16px;
