@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # npm ci 대신 install: macOS에서 만든 락파일이 리눅스용 optional dep의
+      # 하위 항목을 누락하는 npm 버그(npm/cli#4828) 우회
+      - run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
