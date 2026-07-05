@@ -69,7 +69,7 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 각 작업은 독립 커밋(들)으로 완결하라. **완료 기준(DoD)을 만족하지 못하면 다음 작업으로 넘어가지 마라.**
 
-### Task 1 — 스트로크 히스토리 리팩터링 (undo의 기반, 최우선)
+### ✅ Task 1 — 스트로크 히스토리 리팩터링 (완료 2026-07-06)
 
 현재 `drawing.ts`는 캔버스에 직접 굽기 때문에 undo가 불가능하다. 이걸 먼저 풀어야 Task 2~3이 쉬워진다.
 
@@ -86,7 +86,7 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 **DoD**: 그리기→undo→다시 그리기가 자연스럽고, 스트로크 50개 이상에서도 60fps 유지. `npm run build` 통과.
 
-### Task 2 — 게임 모드 "AI 캐치마인드" (임팩트 최대)
+### ✅ Task 2 — 게임 모드 "AI 캐치마인드" (완료 2026-07-06)
 
 **구현 순서:**
 1. `src/game.ts` 신설. 상태머신: `idle → countdown(3초) → drawing(30초) → judging → result`.
@@ -98,7 +98,7 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 **DoD**: 시작→그리기→채점→결과→다음 라운드 루프가 끊김 없이 돌고, AI 오답 시에도 UX가 자연스럽다 (예: "고양이인 줄 알았는데 강아지였군요!").
 
-### Task 3 — 제스처 확장
+### ✅ Task 3 — 제스처 확장 (완료 2026-07-06 — 실사용 오인식률은 브라우저에서 계속 관찰할 것)
 
 1. `gestures.ts`에 엄지 판정 추가. 엄지는 tip-PIP 거리 비교가 불안정하므로 **엄지 tip(4)과 새끼 MCP(17) 거리**로 폈는지 판정하라.
 2. 👍 (엄지만 폄) = 게임 모드 제출 / 일반 모드 undo.
@@ -107,7 +107,7 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 **DoD**: 5개 제스처가 서로 오인식 없이 동작 (사용자 브라우저 테스트 필수).
 
-### Task 4 — 테스트 도입
+### ✅ Task 4 — 테스트 도입 (완료 2026-07-06 — vitest 28케이스, CI 포함)
 
 1. `npm install -D vitest` 후 `package.json`에 `"test": "vitest run"` 추가.
 2. 순수 함수부터: `gestures.ts`의 `classify()`(합성 랜드마크 배열로 point/fist/palm 케이스), `GestureDebouncer`(전환 타이밍), `smoothing.ts`(수렴성, reset).
@@ -115,7 +115,7 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 **DoD**: `npm test` 통과, 최소 15개 케이스. CI는 GitHub Actions로 `build + test` (`.github/workflows/ci.yml`).
 
-### Task 5 — 배포 (GitHub Pages)
+### ✅ Task 5 — 배포 (GitHub Pages) (완료 2026-07-06)
 
 1. `vite.config.ts`에 `base: '/airdrawing/'` 추가.
 2. GitHub Actions로 main 푸시 시 빌드 → Pages 배포.
@@ -124,14 +124,14 @@ AI 인식은 OpenAI API 키 필요 (버튼 첫 클릭 시 입력 → localStorag
 
 **DoD**: 공개 URL에서 카메라 권한 → 그리기까지 동작.
 
-### Task 6 — 녹화 기능
+### ⛔ Task 6 — 녹화 기능 (사용자 지시로 제외 — 요청 전까지 구현하지 말 것)
 
 1. `MediaRecorder`로 합성 스트림 녹화: 오프스크린 캔버스에 비디오(미러) + 그림 캔버스를 rAF마다 합성하고 `canvas.captureStream(30)`을 녹화.
 2. 녹화 시작/정지 버튼, 정지 시 webm 다운로드.
 
 **DoD**: 30초 녹화 시 프레임 드랍 체감 없음, webm이 QuickTime/Chrome에서 재생됨.
 
-### Task 7 — API 키 보호용 서버 프록시 (공개 서비스 전환 시)
+### 🔶 Task 7 — API 키 보호용 서버 프록시 (코드 완료, 배포는 사용자 Cloudflare 계정 필요)
 
 1. Vercel Edge Function 또는 Cloudflare Workers 하나로 충분: `POST /api/recognize`가 이미지(base64)를 받아 서버 측 키로 OpenAI 호출 후 결과만 반환.
 2. rate limit (IP당 분당 5회)과 이미지 크기 제한(1MB)을 반드시 넣어라.

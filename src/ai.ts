@@ -2,6 +2,8 @@ import OpenAI from 'openai'
 
 const KEY_STORAGE = 'openai-api-key'
 const MODEL = 'gpt-4o-mini'
+/** 설정되면 키 없이 서버 프록시 경유 (공개 배포용, server/ 참고) */
+const PROXY_URL = import.meta.env.VITE_API_PROXY
 
 export function hasApiKey(): boolean {
   return !!localStorage.getItem(KEY_STORAGE)
@@ -40,6 +42,18 @@ async function callVision(
   prompt: string,
   json: boolean,
 ): Promise<string> {
+  if (PROXY_URL) {
+    const res = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ image: pngDataUrl, mode: json ? 'judge' : 'describe' }),
+    })
+    if (res.status === 429) throw new Error('요청이 너무 잦습니다. 잠시 후 다시 시도하세요.')
+    if (!res.ok) throw new Error(`서버 오류 (${res.status})`)
+    const data = (await res.json()) as { text?: string }
+    return data.text ?? ''
+  }
+
   const apiKey = getApiKey()
   if (!apiKey) throw new Error('API 키가 없습니다.')
 
